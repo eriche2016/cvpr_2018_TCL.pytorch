@@ -203,7 +203,6 @@ class TripletCenter40Loss(nn.Module):
         self.margin = margin 
         self.ranking_loss = nn.MarginRankingLoss(margin=margin) 
         self.centers = nn.Parameter(torch.randn(40, 40)) # for modelent40
-        # self.centers = nn.Parameter(torch.randn(55, 55)) # for shapenet55
    
     def forward(self, inputs, targets): 
         batch_size = inputs.size(0) 
@@ -222,10 +221,7 @@ class TripletCenter40Loss(nn.Module):
         for i in range(batch_size): # for each sample, we compute distance 
             dist_ap.append(dist[i][mask[i]].max()) # mask[i]: positive samples of sample i
             dist_an.append(dist[i][mask[i]==0].min()) # mask[i]==0: negative samples of sample i 
-        # support new version of pytorch
-        # old version 
-        # dist_ap = torch.cat(dist_ap)
-        # dist_an = torch.cat(dist_an)    
+ 
         dist_ap = torch.stack(dist_ap)
         dist_an = torch.stack(dist_an)
 
